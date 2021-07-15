@@ -12,7 +12,7 @@ import {
 } from './bloat'
 import * as io from "@actions/io"
 import {createComment, createOrUpdateComment} from "./comments"
-import {refToSha} from './utils';
+import {captureOutput, refToSha} from './utils';
 
 const ALLOWED_EVENTS = ['pull_request', 'pull_request_target', 'push']
 
@@ -39,6 +39,7 @@ async function run(): Promise<void> {
     }
   )
 
+  core.info(await captureOutput("git", ["rev-parse", "HEAD"]));
   core.info("log");
   core.info(github.context.eventName);
   core.info(process.env.GITHUB_EVENT_NAME as string);

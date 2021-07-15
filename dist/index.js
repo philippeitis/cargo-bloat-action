@@ -7224,6 +7224,7 @@ async function run() {
     const versions = await Object(core.group)('Toolchain info', async () => {
         return getToolchainVersions();
     });
+    Object(core.info)(await captureOutput("git", ["rev-parse", "HEAD"]));
     Object(core.info)("log");
     Object(core.info)(github.context.eventName);
     Object(core.info)(process.env.GITHUB_EVENT_NAME);
