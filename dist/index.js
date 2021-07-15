@@ -7224,12 +7224,15 @@ async function run() {
     const versions = await Object(core.group)('Toolchain info', async () => {
         return getToolchainVersions();
     });
+    Object(core.info)(`Git sha: ${github.context.sha}`);
+    Object(core.info)(`Git base ref: ${process.env.GITHUB_BASE_REF}`);
     let currentSnapshot = await computeSnapshot(cargoPath, versions, github.context.sha);
     if (github.context.eventName === "push")
         return;
     // Download base branch commit
     await Object(exec.exec)("git", ["fetch", "--depth", "1", "origin", process.env.GITHUB_BASE_REF]);
     let referenceSha = await refToSha("FETCH_HEAD");
+    Object(core.info)(`Reference sha ref: ${referenceSha}`);
     const masterSnapshot = await restoreOrComputeSnapshot(cargoPath, versions, referenceSha);
     await Object(core.group)('Posting comment', async () => {
         const masterCommit = (masterSnapshot === null || masterSnapshot === void 0 ? void 0 : masterSnapshot.commit) || null;

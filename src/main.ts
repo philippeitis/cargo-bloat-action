@@ -39,6 +39,8 @@ async function run(): Promise<void> {
     }
   )
 
+  core.info(`Git sha: ${github.context.sha}`)
+  core.info(`Git base ref: ${process.env.GITHUB_BASE_REF}`)
   let currentSnapshot = await computeSnapshot(cargoPath, versions, github.context.sha);
   if (github.context.eventName === "push") return;
 
@@ -46,6 +48,7 @@ async function run(): Promise<void> {
   await exec("git", ["fetch", "--depth", "1", "origin", process.env.GITHUB_BASE_REF as string]);
 
   let referenceSha = await refToSha("FETCH_HEAD");
+  core.info(`Reference sha ref: ${referenceSha}`)
   const masterSnapshot = await restoreOrComputeSnapshot(cargoPath, versions, referenceSha);
 
   await core.group(
