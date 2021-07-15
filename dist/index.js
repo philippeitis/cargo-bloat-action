@@ -7224,6 +7224,9 @@ async function run() {
     const versions = await Object(core.group)('Toolchain info', async () => {
         return getToolchainVersions();
     });
+    Object(core.info)("log");
+    Object(core.info)(github.context.eventName);
+    Object(core.info)(process.env.GITHUB_EVENT_NAME);
     Object(core.info)(`Git sha: ${github.context.sha}`);
     Object(core.info)(`Git base ref: ${process.env.GITHUB_BASE_REF}`);
     let currentSnapshot = await computeSnapshot(cargoPath, versions, github.context.sha);

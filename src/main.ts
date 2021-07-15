@@ -39,6 +39,9 @@ async function run(): Promise<void> {
     }
   )
 
+  core.info("log");
+  core.info(github.context.eventName);
+  core.info(process.env.GITHUB_EVENT_NAME as string);
   core.info(`Git sha: ${github.context.sha}`)
   core.info(`Git base ref: ${process.env.GITHUB_BASE_REF}`)
   let currentSnapshot = await computeSnapshot(cargoPath, versions, github.context.sha);
